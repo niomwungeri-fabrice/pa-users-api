@@ -24,7 +24,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("v1")
 public class UserController {
