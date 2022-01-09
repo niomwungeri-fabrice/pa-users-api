@@ -31,7 +31,7 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity security) throws Exception {
         security.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/v1/authenticate", "/v1/signin", "/v1/signup").permitAll()
+                .antMatchers("/v1/authenticate", "/v1/signin", "/v1/signup","/").permitAll()
                 .anyRequest().authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         security.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

@@ -74,8 +74,13 @@ public class UserController {
     }
 
     @GetMapping("/count/gender")
-    public ResponseEntity<?> numberByGender(HttpServletRequest request) {
-        return ResponseEntity.ok(new GenericResponse("Success", userService.countByGender()));
+    public ResponseEntity<?> numberByGender() {
+        return ResponseEntity.ok(new GenericResponse("success", userService.countByGender()));
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<?> getAllUsers() {
+        return ResponseEntity.ok(new GenericResponse("success", userService.getAllUsers()));
     }
 
     @CrossOrigin(origins = {"http://localhost:3000"})
@@ -104,6 +109,8 @@ public class UserController {
         UserAccount createUser = userService.signUp(userAccount);
         return ResponseEntity.ok(new GenericResponse("data", createUser));
     }
+
+
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

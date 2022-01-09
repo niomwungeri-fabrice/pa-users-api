@@ -3,12 +3,10 @@ package com.pivot.paUsers.services;
 import com.pivot.paUsers.dao.UserDAO;
 import com.pivot.paUsers.dto.CompleteForm;
 import com.pivot.paUsers.dto.CountByGender;
-import com.pivot.paUsers.enums.Gender;
 import com.pivot.paUsers.models.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,4 +43,9 @@ public class UserService {
     public List<CountByGender> countByGender() {
         return userDAO.countTotalByGender();
     }
+
+    public List<UserAccount> getAllUsers(){
+        return userDAO.findAll();
+    }
+
 }
