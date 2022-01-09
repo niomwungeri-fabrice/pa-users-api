@@ -24,7 +24,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("v1")
 public class UserController {
@@ -45,7 +45,7 @@ public class UserController {
     JWTUtil jwtUtil;
 
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody AuthenticationRequest loginRequest) {
 
@@ -63,7 +63,6 @@ public class UserController {
         return ResponseEntity.ok(new GenericResponse("Authenticated Successfully", jwt));
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
     @GetMapping("/me")
     public ResponseEntity<?> loggedInUser(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
@@ -73,19 +72,17 @@ public class UserController {
         return ResponseEntity.ok(new GenericResponse("Logged In User", userService.findByEmail(loggedInUser)));
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
     @GetMapping("/count/gender")
     public ResponseEntity<?> numberByGender() {
         return ResponseEntity.ok(new GenericResponse("success", userService.countByGender()));
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(new GenericResponse("success", userService.getAllUsers()));
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
+
     @PostMapping("/complete/{userId}/form")
     public ResponseEntity<?> completeForm(@Valid @RequestBody CompleteForm userAccount, @PathVariable("userId") String userId) {
         if (userService.findByUserId(userId) == null) {
@@ -95,16 +92,13 @@ public class UserController {
         return ResponseEntity.ok(new GenericResponse("User info updated!", userService.completeForm(userAccount, userId)));
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000"})
+
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserAccount userAccount) {
-
-
         if (userService.findByEmail(userAccount.getEmail()) != null) {
             return new ResponseEntity(new GenericResponse("error", "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
-
         // Creating user's account
         userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
         System.out.println(userAccount);
