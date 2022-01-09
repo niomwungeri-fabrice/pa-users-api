@@ -63,7 +63,7 @@ public class UserController {
         return ResponseEntity.ok(new GenericResponse("Authenticated Successfully", jwt));
     }
 
-
+    @CrossOrigin(origins = {"http://localhost:3000"})
     @GetMapping("/me")
     public ResponseEntity<?> loggedInUser(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
@@ -72,12 +72,12 @@ public class UserController {
         String loggedInUser = jwtUtil.extractUsername(bearerToken.split(" ")[1]);
         return ResponseEntity.ok(new GenericResponse("Logged In User", userService.findByEmail(loggedInUser)));
     }
-
+    @CrossOrigin(origins = {"http://localhost:3000"})
     @GetMapping("/count/gender")
     public ResponseEntity<?> numberByGender() {
         return ResponseEntity.ok(new GenericResponse("success", userService.countByGender()));
     }
-
+    @CrossOrigin(origins = {"http://localhost:3000"})
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(new GenericResponse("success", userService.getAllUsers()));
