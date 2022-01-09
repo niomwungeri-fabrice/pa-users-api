@@ -3,6 +3,7 @@ package com.pivot.paUsers.controllers;
 import com.pivot.paUsers.dto.AuthenticationRequest;
 import com.pivot.paUsers.dto.CompleteForm;
 import com.pivot.paUsers.models.UserAccount;
+import com.pivot.paUsers.responses.CustomLoggedInUser;
 import com.pivot.paUsers.responses.GenericResponse;
 import com.pivot.paUsers.services.CustomUserDetailsService;
 import com.pivot.paUsers.services.UserService;
@@ -45,7 +46,6 @@ public class UserController {
     JWTUtil jwtUtil;
 
 
-
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody AuthenticationRequest loginRequest) {
 
@@ -59,8 +59,11 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
 
+        UserAccount loggedInUser = userService.findByEmail(loginRequest.getEmail());
+
         final String jwt = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new GenericResponse("Authenticated Successfully", jwt));
+
+        return ResponseEntity.ok(new CustomLoggedInUser(loggedInUser, jwt));
     }
 
     @GetMapping("/me")
@@ -105,8 +108,6 @@ public class UserController {
         UserAccount createUser = userService.signUp(userAccount);
         return ResponseEntity.ok(new GenericResponse("data", createUser));
     }
-
-
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
