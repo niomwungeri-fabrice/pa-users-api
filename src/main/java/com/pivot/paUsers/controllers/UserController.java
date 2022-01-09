@@ -72,11 +72,13 @@ public class UserController {
         String loggedInUser = jwtUtil.extractUsername(bearerToken.split(" ")[1]);
         return ResponseEntity.ok(new GenericResponse("Logged In User", userService.findByEmail(loggedInUser)));
     }
+
     @CrossOrigin(origins = {"http://localhost:3000"})
     @GetMapping("/count/gender")
     public ResponseEntity<?> numberByGender() {
         return ResponseEntity.ok(new GenericResponse("success", userService.countByGender()));
     }
+
     @CrossOrigin(origins = {"http://localhost:3000"})
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
