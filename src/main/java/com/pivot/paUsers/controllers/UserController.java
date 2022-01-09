@@ -45,6 +45,7 @@ public class UserController {
     JWTUtil jwtUtil;
 
 
+    @CrossOrigin(origins = {"http://localhost:3000"})
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody AuthenticationRequest loginRequest) {
 
@@ -77,22 +78,22 @@ public class UserController {
         return ResponseEntity.ok(new GenericResponse("Success", userService.countByGender()));
     }
 
-
+    @CrossOrigin(origins = {"http://localhost:3000"})
     @PostMapping("/complete/{userId}/form")
     public ResponseEntity<?> completeForm(@Valid @RequestBody CompleteForm userAccount, @PathVariable("userId") String userId) {
-        if(userService.findByUserId(userId)== null) {
+        if (userService.findByUserId(userId) == null) {
             return new ResponseEntity(new GenericResponse("error", "User does not exist!"),
                     HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(new GenericResponse("User info updated!", userService.completeForm(userAccount, userId)));
     }
 
-
+    @CrossOrigin(origins = {"http://localhost:3000"})
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserAccount userAccount) {
 
 
-        if(userService.findByEmail(userAccount.getEmail()) != null) {
+        if (userService.findByEmail(userAccount.getEmail()) != null) {
             return new ResponseEntity(new GenericResponse("error", "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }

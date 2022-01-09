@@ -21,9 +21,8 @@ public class UserAccount extends GenericModelInfo {
 
     private String names;
 
-    @Min(value = 18, message = "Age should not be less than 18")
-    @Max(value = 150, message = "Age should not be greater than 150")
-    private int age;
+    @Column(name = "age")
+    private Integer age;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
