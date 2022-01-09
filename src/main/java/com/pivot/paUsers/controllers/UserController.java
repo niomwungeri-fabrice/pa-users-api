@@ -85,7 +85,7 @@ public class UserController {
         return ResponseEntity.ok(new GenericResponse("success", userService.getAllUsers()));
     }
 
-
+    @CrossOrigin(origins = {"http://localhost:3000"})
     @PutMapping("/complete/{userId}/form")
     public ResponseEntity<?> completeForm(@Valid @RequestBody CompleteForm userAccount, @PathVariable("userId") String userId) {
         if (userService.findByUserId(userId) == null) {
