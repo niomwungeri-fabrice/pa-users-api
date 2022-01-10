@@ -85,7 +85,7 @@ public class UserController {
         return ResponseEntity.ok(new GenericResponse("success", userService.getAllUsers()));
     }
 
-    @PostMapping("/complete/{userId}/form")
+    @PutMapping("/complete/{userId}/form")
     public ResponseEntity<?> completeForm(@Valid @RequestBody CompleteForm userAccount, @PathVariable("userId") String userId) {
         if (userService.findByUserId(userId) == null) {
             return new ResponseEntity(new GenericResponse("error", "User does not exist!"),
