@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -102,8 +103,11 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserAccount userAccount) {
-        if (userService.findByEmail(userAccount.getEmail()) != null) {
-            return new ResponseEntity(new GenericResponse("error", "Email Address already in use!"),
+
+        UserAccount  account = userService.findByEmail(userAccount.getEmail());
+
+        if (account != null) {
+            return new ResponseEntity(new GenericResponse("Email Address already in use!", account),
                     HttpStatus.BAD_REQUEST);
         }
         // Creating user's account
