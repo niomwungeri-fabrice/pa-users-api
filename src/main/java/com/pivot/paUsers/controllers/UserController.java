@@ -27,6 +27,7 @@ import java.util.Map;
 
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("v1")
 public class UserController {
 
@@ -85,7 +86,7 @@ public class UserController {
         return ResponseEntity.ok(new GenericResponse("success", userService.getAllUsers()));
     }
 
-    @PutMapping("/complete/{userId}/form")
+    @PostMapping("/complete/{userId}/form")
     public ResponseEntity<?> completeForm(@Valid @RequestBody CompleteForm userAccount, @PathVariable("userId") String userId) {
         if (userService.findByUserId(userId) == null) {
             return new ResponseEntity(new GenericResponse("error", "User does not exist!"),
