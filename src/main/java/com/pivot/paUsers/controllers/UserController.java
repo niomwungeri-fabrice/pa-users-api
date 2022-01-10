@@ -9,6 +9,7 @@ import com.pivot.paUsers.services.CustomUserDetailsService;
 import com.pivot.paUsers.services.UserService;
 import com.pivot.paUsers.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -67,22 +68,25 @@ public class UserController {
         return ResponseEntity.ok(new CustomLoggedInUser(loggedInUser, jwt));
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<?> loggedInUser(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        System.out.println(bearerToken);
-        // extra from header instead
-        String loggedInUser = jwtUtil.extractUsername(bearerToken.split(" ")[1]);
-        return ResponseEntity.ok(new GenericResponse("Logged In User", userService.findByEmail(loggedInUser)));
-    }
-
     @GetMapping("/count/gender")
-    public ResponseEntity<?> numberByGender() {
+    public ResponseEntity<?> numberByGender(@RequestHeader HttpHeaders headers) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = jwtUtil.extractUsername(token.split(" ")[1]);
+        if (!userService.findByEmail(email).isAdmin()) {
+            return new ResponseEntity(new GenericResponse("error", "Un Authorized Request"),
+                    HttpStatus.UNAUTHORIZED);
+        }
         return ResponseEntity.ok(new GenericResponse("success", userService.countByGender()));
     }
 
     @GetMapping("/users")
-    public ResponseEntity<?> getAllUsers() {
+    public ResponseEntity<?> getAllUsers(@RequestHeader HttpHeaders headers) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = jwtUtil.extractUsername(token.split(" ")[1]);
+        if (!userService.findByEmail(email).isAdmin()) {
+            return new ResponseEntity(new GenericResponse("error", "Un Authorized Request"),
+                    HttpStatus.UNAUTHORIZED);
+        }
         return ResponseEntity.ok(new GenericResponse("success", userService.getAllUsers()));
     }
 
