@@ -85,8 +85,7 @@ public class UserController {
         return ResponseEntity.ok(new GenericResponse("success", userService.getAllUsers()));
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000", "https://61db568ded8d788b1e6e4c13--adoring-swartz-eed4ed.netlify.app"})
-    @PutMapping("/complete/{userId}/form")
+    @PostMapping("/complete/{userId}/form")
     public ResponseEntity<?> completeForm(@Valid @RequestBody CompleteForm userAccount, @PathVariable("userId") String userId) {
         if (userService.findByUserId(userId) == null) {
             return new ResponseEntity(new GenericResponse("error", "User does not exist!"),
